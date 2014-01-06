@@ -1,0 +1,1 @@
+Enlightened is an arduino powered LED lightshow that is controlled by sound and by music. It is small,powerful and portable.
