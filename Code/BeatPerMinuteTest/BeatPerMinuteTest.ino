@@ -15,23 +15,25 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(8, PIN, NEO_GRB + NEO_KHZ800);
 void setup() {
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
-  strip.setBrightness(32);
+  strip.setBrightness(12);
   Serial.begin(9800);
 
 }
 
 void loop()
 {
-  int val = analogRead(2);
-  long delayVal;
-  delayVal = val*(.2)*1000;
-  Serial.println(delayVal);
+//  int val = analogRead(2);
+//  long delayVal;
+//  delayVal = val*(.2);
+int BPM = 144;
+int BPMMils = 417;
+  Serial.println(BPMMils);
   strip.setPixelColor(7,155,155,155);
   strip.show();
-  delayMicroseconds(delayVal*100000);
+  delayMicroseconds(BPMMils);
   strip.setPixelColor(7,0,0,0);
   strip.show();
-  delayMicroseconds(delayVal*100000);
+  delayMicroseconds(BPMMils);
   
 }
 
