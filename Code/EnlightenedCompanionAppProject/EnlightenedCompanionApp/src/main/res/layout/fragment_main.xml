@@ -20,18 +20,18 @@
         android:id="@+id/textViewAction"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_below="@+id/textViewProgress"
+        android:layout_below="@+id/seekBar1"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="16dp"></TextView>
+        android:layout_marginTop="37dp"></TextView>
 
-    <SeekBar
+    <cap.nvaughan.enlightenedcompanionapp.SeekBarActivity
         android:id="@+id/seekBar1"
         android:max="100"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/textViewProgress"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="26dp"></SeekBar>
+        android:layout_marginTop="31dp"></cap.nvaughan.enlightenedcompanionapp.SeekBarActivity>
 
 </RelativeLayout>
