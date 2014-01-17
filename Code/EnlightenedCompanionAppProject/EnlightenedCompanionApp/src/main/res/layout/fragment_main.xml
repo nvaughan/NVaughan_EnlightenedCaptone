@@ -6,32 +6,62 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
-        android:text="progress displayed here"
+        android:text="Red Value:"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textViewProgress"
+        android:id="@+id/textRedValue"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"></TextView>
 
     <TextView
-        android:text="action displayed here"
+        android:text="Green Value:"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textViewAction"
+        android:id="@+id/textGreenValue"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_below="@+id/seekBar1"
+        android:layout_below="@+id/seekRedValue"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="37dp"></TextView>
 
-    <cap.nvaughan.enlightenedcompanionapp.SeekBarActivity
-        android:id="@+id/seekBar1"
-        android:max="100"
-
+    <SeekBar
+        android:id="@+id/seekRedValue"
+        android:max="255"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewProgress"
+        android:layout_below="@+id/textRedValue"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="31dp"></cap.nvaughan.enlightenedcompanionapp.SeekBarActivity>
+        android:layout_marginTop="31dp"></SeekBar>
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekGreenValue"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/textGreenValue"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:max="255"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Blue Value:"
+        android:id="@+id/textBlueValue"
+        android:layout_below="@+id/seekGreenValue"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="43dp"
+        />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBlueValue"
+        android:layout_below="@+id/textBlueValue"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="39dp"
+        android:layout_alignParentRight="true"
+        android:max="255"/>
 
 </RelativeLayout>

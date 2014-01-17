@@ -1,5 +1,6 @@
 package cap.nvaughan.enlightenedcompanionapp;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -10,56 +11,69 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeListener {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    private SeekBar barRed; // declare seekbar object variable
+    private SeekBar barGreen; // declare seekbar object variable
+    private SeekBar barBlue; // declare seekbar object variable
+    // declare text label objects
+    private TextView textRedValue, textGreenVlaue, textBlueValue;
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     /**
-     * A placeholder fragment containing a simple view.
+     * Called when the activity is first created.
      */
-    public static class PlaceholderFragment extends Fragment {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // load the layout
+        setContentView(R.layout.fragment_main);
+        barRed = (SeekBar) findViewById(R.id.seekRedValue); // make seekbar object
+        barRed.setOnSeekBarChangeListener(this); // set seekbar listener.
+        // since we are using this class as the listener the class is "this"
+        barGreen = (SeekBar) findViewById(R.id.seekGreenValue); // make seekbar object
+        barGreen.setOnSeekBarChangeListener(this); // set seekbar listener.
 
-        public PlaceholderFragment() {
-        }
+        barBlue = (SeekBar) findViewById(R.id.seekBlueValue); // make seekbar object
+        barBlue.setOnSeekBarChangeListener(this); // set seekbar listener.
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
+
+        // make text label for progress value
+        textRedValue = (TextView) findViewById(R.id.textRedValue);
+        // make text label for action
+        textBlueValue = (TextView) findViewById(R.id.textBlueValue);
+        textGreenVlaue = (TextView) findViewById(R.id.textGreenValue);
+
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress,
+                                  boolean fromUser) {
+        // TODO Auto-generated method stub
+        if(seekBar == barRed)
+        // change progress text label with current seekbar value
+        textRedValue.setText("Red Value: " + progress);
+        else if(seekBar == barGreen)
+        // change action text label to changing
+        textGreenVlaue.setText("Green Value: " + progress);
+        else
+            textBlueValue.setText("Blue Value: " +progress);
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        // TODO Auto-generated method stub
+
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        // TODO Auto-generated method stub
+
     }
 
 }

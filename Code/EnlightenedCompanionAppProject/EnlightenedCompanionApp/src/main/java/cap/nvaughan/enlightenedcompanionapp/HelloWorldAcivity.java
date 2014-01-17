@@ -39,7 +39,7 @@
 //        // change progress text label with current seekbar value
 //        textProgress.setText("The value is: " + progress);
 //        // change action text label to changing
-//        textAction.setText("changing");
+//
 //    }
 //
 //    @Override
