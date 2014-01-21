@@ -29,7 +29,7 @@ void loop()
   //  long delayVal;
   //  delayVal = val*(.2)*1000;
   //  Serial.println(delayVal);
-  int BPM = 127;
+  int BPM = 100;
   int bpmMS = 60000/BPM+1;
   int bpm8thMS = bpmMS/2;
   int bpm12thMS = bpm8thMS/2;
@@ -420,16 +420,17 @@ void chaseInvertBoth(int chaseDelay,int red, int green,int blue)
 
 
 
-
-
-
-
-
-
-
-
-
-
+uint32_t Wheel(byte WheelPos) {
+  if(WheelPos < 85) {
+   return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+  } else if(WheelPos < 170) {
+   WheelPos -= 85;
+   return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  } else {
+   WheelPos -= 170;
+   return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  }
+}
 
 
 
