@@ -8,9 +8,15 @@
 const int sampleWindow = 50; // Sample window width in mS (50 mS = 20Hz)
 unsigned int sample;
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(8,6, NEO_GRB + NEO_KHZ800);
-int beats[50];
+int beatIntervals[50];
+const int BPMAccuracy15Seconds = 15000;
+const int BPMAccuracy10Seconds = 10000;
+const int BPMAccuracy5Seconds = 5000;
+int roughBPM;
 
-
+// Every 5/10/15 second take average miliseconds between 'beats'
+// 'Beats' are counted and then Multiplied by 4 (if taken by 15 seconds) ,6 if 10 and 12 if by 5 to get the BPM
+// Pass BPM into BPM chaser test.
 
 void setup() 
 {
