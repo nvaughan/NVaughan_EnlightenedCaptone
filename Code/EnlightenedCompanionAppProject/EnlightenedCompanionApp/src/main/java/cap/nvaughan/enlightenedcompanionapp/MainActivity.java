@@ -1,26 +1,29 @@
 package cap.nvaughan.enlightenedcompanionapp;
 
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
+import android.content.Context;
+import android.hardware.usb.UsbManager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
+import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+
+import com.hoho.android.usbserial.driver.UsbSerialDriver;
+import com.hoho.android.usbserial.driver.UsbSerialProber;
+
+import java.io.IOException;
+
 public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeListener {
 
+    public final static String TAG = "AndroidColor";
     private SeekBar barRed; // declare seekbar object variable
     private SeekBar barGreen; // declare seekbar object variable
     private SeekBar barBlue; // declare seekbar object variable
     // declare text label objects
     private TextView textRedValue, textGreenVlaue, textBlueValue;
+    UsbManager usbManager;
+    UsbSerialDriver device;
 
 
     /**
@@ -29,7 +32,7 @@ public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // load the layout
+        /* load the layout */
         setContentView(R.layout.fragment_main);
         barRed = (SeekBar) findViewById(R.id.seekRedValue); // make seekbar object
         barRed.setOnSeekBarChangeListener(this); // set seekbar listener.
@@ -47,6 +50,63 @@ public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeLis
         textBlueValue = (TextView) findViewById(R.id.textBlueValue);
         textGreenVlaue = (TextView) findViewById(R.id.textGreenValue);
 
+        usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        device = UsbSerialProber.acquire(usbManager);
+        if(device == null)
+        {
+            Log.d(TAG,"No USB Serival Device");
+        }
+        else
+        {
+            try
+            {
+                device.open();
+                device.setBaudRate(115200);
+            }
+            catch (IOException err)
+            {
+                try{
+                    device.close();
+                }
+                catch(IOException err2)
+                {
+
+                }
+                device = null;
+                return;
+            }
+        }
+
+    }
+
+    private void sendToArduino(int red,int blue,int green)
+    {
+        byte[] dataSend = {(byte)red, (byte)green, (byte)blue, 0x0A};
+        for(int i = 0; i < dataSend.length-1;i++)
+        {
+            if(dataSend[i] == 0x0A)
+            {
+                dataSend[i]= 0x0B;
+            }
+        }
+
+        if(device !=null)
+        {
+            try{
+                device.write(dataSend,500);
+            }
+            catch (IOException e)
+            {
+               // Log.e(Tag,"can't waite");
+            }
+        }
     }
 
     @Override
@@ -65,14 +125,14 @@ public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeLis
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
+        sendToArduino(barRed.getProgress(),barBlue.getProgress(),barGreen.getProgress());
 
 
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
+       sendToArduino(barRed.getProgress(),barBlue.getProgress(),barGreen.getProgress());
 
     }
 
