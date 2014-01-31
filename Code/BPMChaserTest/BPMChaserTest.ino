@@ -13,11 +13,16 @@
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(8, PIN, NEO_GRB + NEO_KHZ800);
 int count;
 int randLight;
+byte colors[3] = {
+  0,0,0};
+byte lineEnding = 0x0A;
+int bpm;
+
 void setup() {
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
   strip.setBrightness(5);
-  Serial.begin(9800);
+  Serial.begin(115200);
   count = 1;
   randLight =1;
 }
@@ -25,11 +30,22 @@ void setup() {
 
 void loop()
 {
-  int val = analogRead(2);
+
+  if(Serial.available()>2)
+  {
+    byte tempColors[3]= {colors[0],colors[1],colors[3]};
+    int bytesRead = Serial.readBytesUntil(lineEnding,(char*)colors,3);
+    if(color[0] == 1)
+    {
+      bpm = color[2];
+      colors=tempColors;
+    }
+  }
+  // int val = analogRead(2);
   //  long delayVal;
   //  delayVal = val*(.2)*1000;
   //  Serial.println(delayVal);
-  int BPM = 98;
+  bpm = 98;
   int bpmMS = 60000/BPM+1;
   int bpm8thMS = bpmMS/2;
   int bpm12thMS = bpm8thMS/2;
@@ -59,115 +75,115 @@ void loop()
     randLight = random(1,6);
     count = 0;
   }
-  for(uint16_t i = 0; i<strip.numPixels();i++)
-    for(uint16_t j = 0; j<256;j++)
-      chaseLEDRainbow(chaseDelay8th,i,j);
-      //    switch(randLight)
-      //    {
-      //    case 1:
-      //      chaseLED(chaseDelay8th,155,155,155);
-      //
-      //      break;
-      //    case 2:
-      //      chaseBothWays(chaseDelay8th,155,155,155);
-      //
-      //      break;
-      //    case 3:
-      //      singleOnOff(chaseDelay8th,155,155,155);
-      //      singleOnOff(chaseDelay8th,155,155,155);
-      //      singleOnOff(chaseDelay8th,155,155,155);
-      //
-      //      break;
-      //    case 4:
-      //      singleOff(chaseDelay8th,155,155,155);
-      //      singleOff(chaseDelay8th,155,155,155);
-      //      singleOff(chaseDelay8th,155,155,155);
-      //
-      //      break;
-      //    case 5:
-      //      chaseInvert(chaseDelay8th,155,155,155);
-      //
-      //      break;
-      //    case 6:
-      //      chaseInvertBoth(chaseDelay8th,155,155,155);
-      //
-      //      break;
-      //    }
+  //  for(uint16_t i = 0; i<strip.numPixels();i++)
+  //    for(uint16_t j = 0; j<256;j++)
+  //      chaseLEDRainbow(chaseDelay8th,i,j);
+  switch(randLight)
+  {
+  case 1:
+    chaseLED(chaseDelay8th,map(colors[0],0,255,0,255),map(colors[1],0,255,0,255),map(colors[2],0,255,0,255));
+
+    break;
+  case 2:
+    chaseBothWays(chaseDelay8th,map(colors[0],0,255,0,255),map(colors[1],0,255,0,255),map(colors[2],0,255,0,255));
+
+    break;
+  case 3:
+    singleOnOff(chaseDelay8th,map(colors[0],0,255,0,255),map(colors[1],0,255,0,255),map(colors[2],0,255,0,255));
+    singleOnOff(chaseDelay8th,map(colors[0],0,255,0,255),map(colors[1],0,255,0,255),map(colors[2],0,255,0,255));
+    singleOnOff(chaseDelay8th,map(colors[0],0,255,0,255),map(colors[1],0,255,0,255),map(colors[2],0,255,0,255));
+
+    break;
+  case 4:
+    singleOff(chaseDelay8th,map(colors[0],0,255,0,255),map(colors[1],0,255,0,255),map(colors[2],0,255,0,255));
+    singleOff(chaseDelay8th,map(colors[0],0,255,0,255),map(colors[1],0,255,0,255),map(colors[2],0,255,0,255));
+    singleOff(chaseDelay8th,155,155,155);
+
+    break;
+  case 5:
+    chaseInvert(chaseDelay8th,map(colors[0],0,255,0,255),map(colors[1],0,255,0,255),map(colors[2],0,255,0,255));
+
+    break;
+  case 6:
+    chaseInvertBoth(chaseDelay8th,map(colors[0],0,255,0,255),map(colors[1],0,255,0,255),map(colors[2],0,255,0,255));
+
+    break;
+  }
 
 
-      //  if(val < 341)
-      //  {
-      //    val=(val*3)/4;
-      //    //chaseBothWays(chaseDelay8th,(265-val),val,0);
-      //    chaseInvertBoth(chaseDelay,(265-val),val,0);
-      //  }
-      //  else if(val < 682)
-      //  {
-      //    val=((val-341)*3)/4;
-      //    // chaseBothWays(chaseDelay8th,0,256-val,val);    
-      //    chaseInvertBoth(chaseDelay,0,256-val,val);    
-      //  }
-      //  else
-      //  {
-      //    val=((val-683)*3)/4;
-      //    //chaseBothWays(chaseDelay8th,val,0,256-val);    
-      //   chaseInvertBoth(chaseDelay,val,0,256-val);    
-      //  }
-    }
+  //  if(val < 341)
+  //  {
+  //    val=(val*3)/4;
+  //    //chaseBothWays(chaseDelay8th,(265-val),val,0);
+  //    chaseInvertBoth(chaseDelay,(265-val),val,0);
+  //  }
+  //  else if(val < 682)
+  //  {
+  //    val=((val-341)*3)/4;
+  //    // chaseBothWays(chaseDelay8th,0,256-val,val);    
+  //    chaseInvertBoth(chaseDelay,0,256-val,val);    
+  //  }
+  //  else
+  //  {
+  //    val=((val-683)*3)/4;
+  //chaseBothWays(chaseDelay8th,val,0,256-val);    
+  // chaseInvertBoth(chaseDelay,val,0,256-val);    
+  // }
+}
 
-    void chaseLEDRainbow(int chaseDelay,int pos,int j)
-    {
+void chaseLEDRainbow(int chaseDelay,int pos,int j)
+{
 
-      strip.setPixelColor(7,Wheel((pos+j)&255));
-      strip.show();
-      delay(chaseDelay);
-      strip.setPixelColor(6,Wheel((pos+j)&255));
-      strip.show();
-      delay(chaseDelay);
-      strip.setPixelColor(5,Wheel((pos+j)&255));
-      strip.show();
-      delay(chaseDelay);
-      strip.setPixelColor(4,Wheel((pos+j)&255));
-      strip.show();
-      delay(chaseDelay);
-      strip.setPixelColor(3,Wheel((pos+j)&255));
-      strip.show();
-      delay(chaseDelay);
-      strip.setPixelColor(2,Wheel((pos+j)&255));
-      strip.show();
-      delay(chaseDelay);
-      strip.setPixelColor(1,Wheel((pos+j)&255));
-      strip.show();
-      delay(chaseDelay);
-      strip.setPixelColor(0,Wheel((pos+j)&255));
-      strip.show();
-      delay(chaseDelay);
-      strip.setPixelColor(7,0,0,0);
-      strip.show();
-      delay(chaseDelay);
-      strip.setPixelColor(6,0,0,0);
-      strip.show();
-      delay(chaseDelay);
-      strip.setPixelColor(5,0,0,0);
-      strip.show();
-      delay(chaseDelay);
-      strip.setPixelColor(4,0,0,0);
-      strip.show();
-      delay(chaseDelay);
-      strip.setPixelColor(3,0,0,0);
-      strip.show();
-      delay(chaseDelay);
-      strip.setPixelColor(2,0,0,0);
-      strip.show();
-      delay(chaseDelay);
-      strip.setPixelColor(1,0,0,0);
-      strip.show();
-      delay(chaseDelay);
-      strip.setPixelColor(0,0,0,0);
-      strip.show();
-      delay(chaseDelay);
+  strip.setPixelColor(7,Wheel((pos+j)&255));
+  strip.show();
+  delay(chaseDelay);
+  strip.setPixelColor(6,Wheel((pos+j)&255));
+  strip.show();
+  delay(chaseDelay);
+  strip.setPixelColor(5,Wheel((pos+j)&255));
+  strip.show();
+  delay(chaseDelay);
+  strip.setPixelColor(4,Wheel((pos+j)&255));
+  strip.show();
+  delay(chaseDelay);
+  strip.setPixelColor(3,Wheel((pos+j)&255));
+  strip.show();
+  delay(chaseDelay);
+  strip.setPixelColor(2,Wheel((pos+j)&255));
+  strip.show();
+  delay(chaseDelay);
+  strip.setPixelColor(1,Wheel((pos+j)&255));
+  strip.show();
+  delay(chaseDelay);
+  strip.setPixelColor(0,Wheel((pos+j)&255));
+  strip.show();
+  delay(chaseDelay);
+  strip.setPixelColor(7,0,0,0);
+  strip.show();
+  delay(chaseDelay);
+  strip.setPixelColor(6,0,0,0);
+  strip.show();
+  delay(chaseDelay);
+  strip.setPixelColor(5,0,0,0);
+  strip.show();
+  delay(chaseDelay);
+  strip.setPixelColor(4,0,0,0);
+  strip.show();
+  delay(chaseDelay);
+  strip.setPixelColor(3,0,0,0);
+  strip.show();
+  delay(chaseDelay);
+  strip.setPixelColor(2,0,0,0);
+  strip.show();
+  delay(chaseDelay);
+  strip.setPixelColor(1,0,0,0);
+  strip.show();
+  delay(chaseDelay);
+  strip.setPixelColor(0,0,0,0);
+  strip.show();
+  delay(chaseDelay);
 
-    }
+}
 
 void chaseLED(int chaseDelay,int red,int green,int blue)
 {
@@ -489,6 +505,7 @@ uint32_t Wheel(byte WheelPos) {
     return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
   }
 }
+
 
 
 

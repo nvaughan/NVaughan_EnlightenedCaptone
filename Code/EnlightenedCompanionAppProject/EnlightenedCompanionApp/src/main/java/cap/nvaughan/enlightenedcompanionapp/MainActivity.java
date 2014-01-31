@@ -5,6 +5,8 @@ import android.content.Context;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -24,6 +26,7 @@ public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeLis
     private TextView textRedValue, textGreenVlaue, textBlueValue;
     UsbManager usbManager;
     UsbSerialDriver device;
+    private Button b;
 
 
     /**
@@ -51,9 +54,18 @@ public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeLis
         textGreenVlaue = (TextView) findViewById(R.id.textGreenValue);
 
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+        b = (Button) findViewById(R.id.button);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int bpm = (int) R.id.BPMinput;
+                sendBPMToArduino(bpm);
+            }
+        });
 
 
     }
+
 
     @Override
     protected void onResume() {
@@ -86,7 +98,7 @@ public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeLis
 
     }
 
-    private void sendToArduino(int red,int blue,int green)
+    private void sendColorToArduino(int red,int blue,int green)
     {
         byte[] dataSend = {(byte)red, (byte)green, (byte)blue, 0x0A};
         for(int i = 0; i < dataSend.length-1;i++)
@@ -109,6 +121,30 @@ public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeLis
         }
     }
 
+    private void sendBPMToArduino(int BPM)
+    {
+        byte[] dataSend = { (byte) 1,(byte)BPM, 0x0A};
+        for(int i = 0; i < dataSend.length-1;i++)
+        {
+            if(dataSend[i] == 0x0A)
+            {
+                dataSend[i]= 0x0B;
+            }
+        }
+        if(device !=null)
+        {
+            try{
+                device.write(dataSend,500);
+            }
+            catch (IOException e)
+            {
+                // Log.e(Tag,"can't waite");
+            }
+        }
+
+    }
+
+
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress,
                                   boolean fromUser) {
@@ -121,18 +157,20 @@ public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeLis
         textGreenVlaue.setText("Green Value: " + progress);
         else
             textBlueValue.setText("Blue Value: " +progress);
+
+        sendColorToArduino(barRed.getProgress(), barBlue.getProgress(), barGreen.getProgress());
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        sendToArduino(barRed.getProgress(),barBlue.getProgress(),barGreen.getProgress());
+        sendColorToArduino(barRed.getProgress(), barBlue.getProgress(), barGreen.getProgress());
 
 
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-       sendToArduino(barRed.getProgress(),barBlue.getProgress(),barGreen.getProgress());
+       sendColorToArduino(barRed.getProgress(), barBlue.getProgress(), barGreen.getProgress());
 
     }
 
