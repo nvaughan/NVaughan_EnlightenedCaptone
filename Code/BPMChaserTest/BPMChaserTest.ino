@@ -33,20 +33,27 @@ void loop()
 
   if(Serial.available()>2)
   {
-    byte tempColors[3]= {colors[0],colors[1],colors[3]};
+    byte tempColors[3]= {colors[0],colors[1],colors[2]};
     int bytesRead = Serial.readBytesUntil(lineEnding,(char*)colors,3);
-    if(color[0] == 1)
+    if(colors[0] == 1)
     {
-      bpm = color[2];
-      colors=tempColors;
+      bpm = colors[1];
+      colors[0]= tempColors[0];
+   colors[1]=tempColors[1];
+  colors[2]=tempColors[2];
     }
+  }else
+  {
+   colors[0] = 155;   colors[1] = 155;   colors[2] = 155;
   }
+  
+
   // int val = analogRead(2);
   //  long delayVal;
   //  delayVal = val*(.2)*1000;
   //  Serial.println(delayVal);
   bpm = 98;
-  int bpmMS = 60000/BPM+1;
+  int bpmMS = 60000/bpm+1;
   int bpm8thMS = bpmMS/2;
   int bpm12thMS = bpm8thMS/2;
   int bpm6thMS = bpmMS*2/3;
