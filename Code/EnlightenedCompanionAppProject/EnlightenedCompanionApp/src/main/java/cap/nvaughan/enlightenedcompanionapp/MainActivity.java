@@ -26,7 +26,7 @@ public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeLis
     private TextView textRedValue, textGreenVlaue, textBlueValue;
     UsbManager usbManager;
     UsbSerialDriver device;
-    private Button b;
+
 
 
     /**
@@ -54,14 +54,8 @@ public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeLis
         textGreenVlaue = (TextView) findViewById(R.id.textGreenValue);
 
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
-        b = (Button) findViewById(R.id.button);
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int bpm = (int) R.id.BPMinput;
-                sendBPMToArduino(bpm);
-            }
-        });
+
+      
 
 
     }
@@ -121,28 +115,8 @@ public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeLis
         }
     }
 
-    private void sendBPMToArduino(int BPM)
-    {
-        byte[] dataSend = { (byte) 1,(byte)BPM, 0x0A};
-        for(int i = 0; i < dataSend.length-1;i++)
-        {
-            if(dataSend[i] == 0x0A)
-            {
-                dataSend[i]= 0x0B;
-            }
-        }
-        if(device !=null)
-        {
-            try{
-                device.write(dataSend,500);
-            }
-            catch (IOException e)
-            {
-                // Log.e(Tag,"can't waite");
-            }
-        }
 
-    }
+
 
 
     @Override
