@@ -17,8 +17,8 @@ void loop()
 byte val1 = (byte)digitalRead(b1);
 byte val2 = (byte)digitalRead(b2);
 Serial.write(‘a’); //SYNC char
-Serial.write(val1);
+
 Serial.write(‘b’); //SYNC char
-Serial.write(val2);
+
 delay(50);
 }
