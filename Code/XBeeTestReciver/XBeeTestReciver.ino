@@ -7,17 +7,22 @@ void setup() {
   Serial.begin(9600);
   strip.begin();
   strip.show();
+  strip.setPixelColor(0,155,155,155);
+  strip.show();
+  delay(50);
+  strip.setPixelColor(0,0,0,0);
+  strip.show();
   Serial.println("Begin");
-  delay(1000);
+  //delay(1000);
 }
 
 void loop() {
   if(Serial.available()>0)
   {
     char inChar = Serial.read();
-    Serial.println(inChar);
+    //Serial.println(inChar);
     while(Serial.available()<=0);
-    Serial.println(inChar);
+    //Serial.println(inChar);
     if(inChar=='a')
     {
       Serial.println(inChar);
@@ -43,7 +48,7 @@ void loop() {
     }
   }
 
-  strip.show();
+  //mmmmmmmmmmmmmmmmmmmmmmmmmmmmmstrip.show();
 
   delay(10);
 }
