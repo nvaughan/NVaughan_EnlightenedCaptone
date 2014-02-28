@@ -37,39 +37,45 @@ void loop()
   if(Serial.available()>0)
   {
     randLight = Serial.read();
-    switch(randLight)
+    count = 1;
+    while(count !=10)
     {
-    case 1:
-      chaseLED(chaseDelay8th,155,155,155);
+      switch(randLight)
+      {
+      case 1:
+        chaseLED(chaseDelay8th,155,155,155);
 
-      break;
-    case 2:
-      chaseBothWays(chaseDelay8th,155,155,155);
+        break;
+      case 2:
+        chaseBothWays(chaseDelay8th,155,155,155);
 
-      break;
-    case 3:
-      singleOnOff(chaseDelay8th,155,155,155);
-      singleOnOff(chaseDelay8th,155,155,155);
-      singleOnOff(chaseDelay8th,155,155,155);
+        break;
+      case 3:
+        singleOnOff(chaseDelay8th,155,155,155);
+        singleOnOff(chaseDelay8th,155,155,155);
+        singleOnOff(chaseDelay8th,155,155,155);
 
-      break;
-    case 4:
-      singleOff(chaseDelay8th,155,155,155);
-      singleOff(chaseDelay8th,155,155,155);
-      singleOff(chaseDelay8th,155,155,155);
+        break;
+      case 4:
+        singleOff(chaseDelay8th,155,155,155);
+        singleOff(chaseDelay8th,155,155,155);
+        singleOff(chaseDelay8th,155,155,155);
 
-      break;
-    case 5:
-      chaseInvert(chaseDelay8th,155,155,155);
+        break;
+      case 5:
+        chaseInvert(chaseDelay8th,155,155,155);
 
-      break;
-    case 6:
-      chaseInvertBoth(chaseDelay8th,155,155,155);
+        break;
+      case 6:
+        chaseInvertBoth(chaseDelay8th,155,155,155);
 
-      break;
+        break;
+      }
+      count++;
     }
   }
 }
+
 
 
 
