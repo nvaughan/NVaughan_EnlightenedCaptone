@@ -25,7 +25,8 @@ void setup() {
   chaseDelay8th = bpm8thMS/7;
   chaseDelay6th = bpm6thMS/7;
   chaseDelay3rd = bpm3rdMS/7;
-  chaseDelay12th = bpm12thMS/7;
+  chaseDelay12th = bpm12thMS/7;  
+
 }
 
 
@@ -33,7 +34,7 @@ void loop()
 {
 
   int randLight = 0;
-  if(Serial.available>0)
+  if(Serial.available()>0)
   {
     randLight = Serial.read();
     switch(randLight)
