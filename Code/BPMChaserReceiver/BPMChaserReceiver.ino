@@ -13,7 +13,7 @@ void setup() {
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
   strip.setBrightness(5);
-  Serial.begin(9800);
+  Serial.begin(115200);
   count = 1;
   randLight =1;
   int BPM = 100;
